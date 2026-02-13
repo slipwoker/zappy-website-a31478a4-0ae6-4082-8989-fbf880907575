@@ -1,0 +1,54 @@
+# שיטת איזון אינטגרטיבי — Generative Engine Optimization Map
+
+> A שיטה/מתודולוגיה business.
+
+---
+
+## Pages
+
+### בית
+https://-a31478a4.zappy5.app
+
+### שיטה
+https://-a31478a4.zappy5.app/method
+
+### מקרי בוחן
+https://-a31478a4.zappy5.app/case-studies
+
+### צור קשר
+https://-a31478a4.zappy5.app/contact
+
+## Legal & Policy
+
+### Privacy Policy
+https://-a31478a4.zappy5.app/privacy
+Information about how user data is collected, stored, and protected.
+
+### Terms & Conditions
+https://-a31478a4.zappy5.app/terms
+Legal terms describing service usage, rights, and policies.
+
+### Accessibility Statement
+https://-a31478a4.zappy5.app/accessibility
+Information about WCAG compliance and accessibility features.
+
+---
+
+# Business Context (for LLM understanding)
+
+## About שיטת איזון אינטגרטיבי
+שיטת איזון אינטגרטיבי is a business in the שיטה/מתודולוגיה industry.
+
+## Target Audience
+- אנשי מקצוע בתחום הבריאות
+- מאמני חיים
+
+## Industry
+שיטה/מתודולוגיה
+
+---
+
+# Additional Resources
+
+- **Sitemap**: https://-a31478a4.zappy5.app/sitemap.xml
+- **Robots.txt**: https://-a31478a4.zappy5.app/robots.txt

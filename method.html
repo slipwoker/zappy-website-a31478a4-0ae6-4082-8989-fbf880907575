@@ -1,0 +1,707 @@
+<!DOCTYPE html><html lang="he" dir="rtl"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>שיטה - שיטת איזון אינטגרטיבי</title>
+  <meta name="description" content="שיטה - שיטת איזון אינטגרטיבי provides professional שיטה/מתודולוגיה services. Specializing in שיטת איזון אינטגרטיבי.">
+  <meta name="keywords" content="שיטת איזון אינטגרטיבי, שיטות טיפול הוליסטיות בישראל, איזון אינטגרטיבי מה זה, טיפול אינטגרטיבי">
+  <meta name="robots" content="index, follow">
+  
+  <meta property="og:title" content="שיטה - שיטת איזון אינטגרטיבי">
+  <meta property="og:description" content="שיטה - שיטת איזון אינטגרטיבי provides professional שיטה/מתודולוגיה services. Specializing in שיטת איזון אינטגרטיבי.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="he_IL">
+  
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="שיטה - שיטת איזון אינטגרטיבי">
+  <meta name="twitter:description" content="שיטה - שיטת איזון אינטגרטיבי provides professional שיטה/מתודולוגיה services. Specializing in שיטת איזון אינטגרטיבי.">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
+    <!-- Mickidum Accessibility Toolbar -->
+    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
+<!-- Zappy Analytics -->
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  var config = {
+    websiteId: 'a31478a4-0ae6-4082-8989-fbf880907575',
+    apiUrl: 'https://api.zappy5.com/api/analytics/track',
+    sessionDuration: 30 * 60 * 1000, // 30 minutes
+    visitorDuration: 30 * 24 * 60 * 60 * 1000, // 30 days
+    trackPageViews: true,
+    trackClicks: true,
+    trackFormSubmissions: true
+  };
+  
+  // Generate or retrieve persistent visitor ID (30 days)
+  function getVisitorId() {
+    var visitorKey = 'zappy_visitor_' + config.websiteId;
+    var visitor = null;
+    
+    try {
+      visitor = localStorage.getItem(visitorKey);
+      if (visitor) {
+        var visitorData = JSON.parse(visitor);
+        var now = Date.now();
+        
+        // Check if visitor ID is still valid (30 days)
+        if (now - visitorData.created < config.visitorDuration) {
+          // Update last seen timestamp
+          visitorData.lastSeen = now;
+          localStorage.setItem(visitorKey, JSON.stringify(visitorData));
+          return visitorData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: LocalStorage not available');
+    }
+    
+    // Generate new visitor ID
+    var newVisitorId = 'zv_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      localStorage.setItem(visitorKey, JSON.stringify({
+        id: newVisitorId,
+        created: Date.now(),
+        lastSeen: Date.now()
+      }));
+    } catch (e) {
+      // Continue without local storage
+    }
+    
+    return newVisitorId;
+  }
+  
+  // Generate or retrieve session ID (30 minutes)
+  function getSessionId() {
+    var sessionKey = 'zappy_session_' + config.websiteId;
+    var session = null;
+    
+    try {
+      session = sessionStorage.getItem(sessionKey);
+      if (session) {
+        var sessionData = JSON.parse(session);
+        var now = Date.now();
+        
+        // Check if session is still valid
+        if (now - sessionData.timestamp < config.sessionDuration) {
+          // Update timestamp
+          sessionData.timestamp = now;
+          sessionStorage.setItem(sessionKey, JSON.stringify(sessionData));
+          return sessionData.id;
+        }
+      }
+    } catch (e) {
+      console.warn('Zappy Analytics: SessionStorage not available');
+    }
+    
+    // Generate new session ID
+    var newSessionId = 'zs_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    
+    try {
+      sessionStorage.setItem(sessionKey, JSON.stringify({
+        id: newSessionId,
+        timestamp: Date.now()
+      }));
+    } catch (e) {
+      // Continue without session storage
+    }
+    
+    return newSessionId;
+  }
+  
+  var visitorId = getVisitorId();
+  var sessionId = getSessionId();
+  
+  // Track an event
+  function trackEvent(eventType, data) {
+    data = data || {};
+    
+    var eventData = {
+      website_id: config.websiteId,
+      event_type: eventType,
+      page_path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+      visitor_id: visitorId,
+      session_id: sessionId,
+      metadata: data
+    };
+    
+    // Use sendBeacon if available (better for page unload events)
+    if (navigator.sendBeacon) {
+      var blob = new Blob([JSON.stringify(eventData)], { type: 'application/json' });
+      navigator.sendBeacon(config.apiUrl, blob);
+    } else {
+      // Fallback to fetch
+      fetch(config.apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(eventData),
+        keepalive: true
+      }).catch(function(error) {
+        console.warn('Zappy Analytics: Failed to track event', error);
+      });
+    }
+  }
+  
+  // Track page view
+  if (config.trackPageViews) {
+    trackEvent('pageview', {
+      title: document.title,
+      url: window.location.href
+    });
+  }
+  
+  // Track clicks on important elements
+  if (config.trackClicks) {
+    document.addEventListener('click', function(e) {
+      var target = e.target;
+      
+      // Track button clicks (counted as actions)
+      if (target.tagName === 'BUTTON' || target.closest('button')) {
+        var button = target.tagName === 'BUTTON' ? target : target.closest('button');
+        trackEvent('click', {
+          element: 'button',
+          text: button.textContent.trim().substring(0, 100),
+          id: button.id || null,
+          class: button.className || null
+        });
+      }
+      
+      // Track link clicks (navigation - not counted as actions)
+      else if (target.tagName === 'A' || target.closest('a')) {
+        var link = target.tagName === 'A' ? target : target.closest('a');
+        trackEvent('navigation', {
+          element: 'link',
+          text: link.textContent.trim().substring(0, 100),
+          href: link.href,
+          external: link.hostname !== window.location.hostname
+        });
+      }
+    }, true);
+  }
+  
+  // Track form submissions
+  if (config.trackFormSubmissions) {
+    document.addEventListener('submit', function(e) {
+      var form = e.target;
+      
+      trackEvent('form_submit', {
+        form_id: form.id || null,
+        form_name: form.name || null,
+        form_action: form.action || null,
+        form_method: form.method || 'GET'
+      });
+    }, true);
+  }
+  
+  // Track time on page (send on page unload)
+  var pageLoadTime = Date.now();
+  
+  window.addEventListener('beforeunload', function() {
+    var timeOnPage = Math.floor((Date.now() - pageLoadTime) / 1000); // in seconds
+    
+    trackEvent('page_unload', {
+      time_on_page: timeOnPage,
+      page_path: window.location.pathname
+    });
+  });
+  
+  // Expose tracking function globally for custom events
+  window.zappyAnalytics = {
+    track: trackEvent,
+    getVisitorId: function() { return visitorId; },
+    getSessionId: function() { return sessionId; }
+  };
+  
+})();
+</script>
+<!-- End Zappy Analytics -->
+
+    <style id="zappy-dropdown-submenu-styles">
+      /* ========== DESKTOP DROPDOWN SUBMENU STYLES ========== */
+      /* Base styles for dropdown submenus - parent must be positioned */
+      .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { position: relative; }
+      /* Submenu base - hidden by default */
+      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; background: white; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
+      /* CRITICAL: Desktop hover styles to show dropdown */
+      .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Submenu item styling */
+      .sub-menu li { list-style: none; margin: 0; padding: 0; }
+      .sub-menu a { display: block !important; padding: 10px 16px !important; color: #333 !important; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 0.2s; }
+      .sub-menu a:hover { background-color: #f5f5f5; }
+      /* RTL (Hebrew/Arabic) dropdown positioning */
+      [dir="rtl"] .nav-menu .sub-menu, [dir="rtl"] nav .sub-menu, [dir="rtl"] .navbar .sub-menu, html[lang="he"] .nav-menu .sub-menu, html[lang="he"] nav .sub-menu, html[lang="he"] .navbar .sub-menu, html[lang="ar"] .nav-menu .sub-menu, html[lang="ar"] nav .sub-menu, html[lang="ar"] .navbar .sub-menu { left: auto !important; right: 0 !important; }
+      /* Hide empty dropdown menus */
+      .sub-menu:empty, .sub-menu:not(:has(li:not(.zappy-hidden-menu-item))), .sub-menu:not(:has(li)) { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+      /* Desktop: show submenu on Menu Group hover */
+      li:has(.menu-group-title):hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
+      /* Menu Group title styling */
+      .nav-menu > li > .menu-group-title, #navMenu > li > .menu-group-title { display: inline-block; padding: 0.5rem 1rem; cursor: default; user-select: none; }
+      
+      /* ========== MOBILE SUBMENU STYLES ========== */
+      @media (max-width: 768px) {
+        .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; padding: 0 !important; border-radius: 0 !important; }
+        .sub-menu.mobile-expanded { max-height: 500px !important; opacity: 1 !important; visibility: visible !important; padding: 8px 0 8px 16px !important; }
+        [dir="rtl"] .sub-menu.mobile-expanded, html[lang="he"] .sub-menu.mobile-expanded { padding: 8px 16px 8px 0 !important; }
+        /* Disable hover behavior on mobile */
+        .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 0; visibility: hidden; pointer-events: none; }
+        .nav-menu li > .sub-menu.mobile-expanded, nav li > .sub-menu.mobile-expanded, .navbar li > .sub-menu.mobile-expanded, #navMenu li > .sub-menu.mobile-expanded { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; }
+        .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { display: flex !important; flex-wrap: wrap !important; align-items: center !important; }
+        .nav-menu li:has(.sub-menu) > a, nav li:has(.sub-menu) > a, .navbar li:has(.sub-menu) > a, #navMenu li:has(.sub-menu) > a { flex: 1 !important; }
+        .nav-menu li:has(.sub-menu) > a [class*="chevron"], .nav-menu li:has(.sub-menu) > a [class*="arrow"], .nav-menu li:has(.sub-menu) > a .fa-chevron-down, .nav-menu li:has(.sub-menu) > a .fa-angle-down, nav li:has(.sub-menu) > a [class*="chevron"], nav li:has(.sub-menu) > a [class*="arrow"], #navMenu li:has(.sub-menu) > a [class*="chevron"], #navMenu li:has(.sub-menu) > a [class*="arrow"] { display: none !important; visibility: hidden !important; }
+        .mobile-submenu-toggle { display: flex !important; align-items: center !important; justify-content: center !important; width: 44px !important; height: 44px !important; background: transparent !important; border: none !important; cursor: pointer !important; }
+        .mobile-submenu-toggle::after { content: '' !important; width: 0 !important; height: 0 !important; border-left: 6px solid transparent !important; border-right: 6px solid transparent !important; border-top: 7px solid currentColor !important; transition: transform 0.3s ease !important; }
+        .mobile-submenu-toggle.expanded::after { transform: rotate(180deg) !important; }
+        .nav-menu li:has(.sub-menu) > .sub-menu, nav li:has(.sub-menu) > .sub-menu { flex-basis: 100% !important; width: 100% !important; }
+        .sub-menu a { padding: 10px 0 !important; display: block !important; }
+        .nav-menu li:has(.sub-menu) > .menu-group-title, nav li:has(.sub-menu) > .menu-group-title, .navbar li:has(.sub-menu) > .menu-group-title, #navMenu li:has(.sub-menu) > .menu-group-title { flex: 1 !important; }
+      }
+      @media (min-width: 769px) { .mobile-submenu-toggle { display: none !important; } }
+    </style>
+</head>
+<body>
+  <nav class="navbar" dir="rtl">
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+    <svg class="hamburger-icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+    <svg class="close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:none;">
+      <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+    </svg>
+  </button>
+  
+  <button class="phone-header-btn" aria-label="Call">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+    </svg>
+  </button>
+  
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a href="/" class="logo-link">
+        <img src="/assets/logo.webp" alt="שיטת איזון אינטגרטיבי" class="logo" />
+      </a>
+    </div>
+    
+    <ul class="nav-menu" id="navMenu"><li><a href="/method">שיטה</a></li><li><a href="/case-studies">מקרי בוחן</a></li></ul>
+    
+    <div class="nav-cta-container">
+      <a href="/contact" class="nav-cta-btn">צור קשר</a>
+    </div>
+  </div>
+</nav>
+  
+  <main>
+    <section class="methodology-intro-section" data-layout-spec="שיטה-intro">
+  <div class="methodology-intro-container">
+    <h1 class="methodology-intro-title">שיטת איזון אינטגרטיבי</h1>
+    
+    <div class="methodology-intro-content">
+      <p>שיטה מקיפה המשלבת כלים טיפוליים מגוונים ליצירת איזון אמיתי בין גוף, נפש ורוח. השיטה מתאימה לכל מי שמחפש דרך מסודרת ומעשית להתמודד עם אתגרים רגשיים, פיזיים ונפשיים, ולהשיג שינוי משמעותי ובר-קיימא.</p>
+      
+      <p>השיטה מיועדת למטפלים המבקשים מתודולוגיה ברורה לעבודה עם לקוחות, ולאנשים פרטיים השואפים להעמיק את ההבנה העצמית ולפתח כלים מעשיים לשיפור איכות החיים. השיטה מספקת מסגרת מובנית שמאפשרת התקדמות מדורגת ומדידה.</p>
+      
+      <p>לאחר אימוץ השיטה, תחוו שינוי בתפיסה העצמית, בדרך שבה אתם מתמודדים עם אתגרים, ובאיכות החיבור לעצמכם ולסביבה. השיטה מעניקה תחושת שליטה וביטחון בתהליך הצמיחה האישית.</p>
+    </div>
+    
+    <div class="methodology-intro-outcomes">
+      <h3 class="methodology-intro-outcomes-title">תוצאות מרכזיות</h3>
+      <div class="methodology-intro-outcomes-list">
+        <p>— איזון משמעותי בין המישורים השונים של החיים</p>
+        <p>— תהליך מהיר יותר עם מסלול ברור וצעדים מוגדרים</p>
+        <p>— ביטחון עצמי והרגשת שליטה בתהליך ההתפתחות</p>
+        <p>— התקדמות מדידה עם אבני דרך ברורות לאורך הדרך</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="methodology-intro-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 2" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="0" y1="1" x2="1200" y2="1" stroke="var(--border-light)" stroke-width="1"></line>
+    </svg>
+  </div>
+  
+  <div class="methodology-intro-dotted-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 20" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,20 L0,10 Q60,8 120,10 T240,8 Q300,10 360,8 T480,10 Q540,8 600,10 T720,8 Q780,10 840,8 T960,10 Q1020,8 1080,10 T1200,10 L1200,20 Z" fill="var(--bg-light)"></path>
+      <circle cx="30" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="60" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="90" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="120" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="150" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="180" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="210" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="240" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="270" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="300" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="330" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="360" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="390" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="420" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="450" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="480" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="510" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="540" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="570" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="600" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="630" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="660" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="690" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="720" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="750" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="780" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="810" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="840" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="870" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="900" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="930" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="960" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="990" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="1020" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="1050" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="1080" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="1110" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="1140" cy="10" r="1.5" fill="var(--border-light)"></circle>
+      <circle cx="1170" cy="10" r="1.5" fill="var(--border-light)"></circle>
+    </svg>
+  </div>
+</section>
+
+<section class="methodology-chapters-section" data-layout-spec="שיטה-chapters">
+  <div class="methodology-chapters-container">
+    <aside class="methodology-chapters-toc">
+      <h3 class="methodology-chapters-toc-title">תוכן העניינים</h3>
+      <nav class="methodology-chapters-toc-nav">
+        <a href="#chapter-01" class="methodology-chapters-toc-link">
+          <span class="methodology-chapters-toc-number">01</span>
+          <span class="methodology-chapters-toc-label">יסודות</span>
+        </a>
+        <a href="#chapter-02" class="methodology-chapters-toc-link">
+          <span class="methodology-chapters-toc-number">02</span>
+          <span class="methodology-chapters-toc-label">אבחון</span>
+        </a>
+        <a href="#chapter-03" class="methodology-chapters-toc-link">
+          <span class="methodology-chapters-toc-number">03</span>
+          <span class="methodology-chapters-toc-label">עיצוב</span>
+        </a>
+        <a href="#chapter-04" class="methodology-chapters-toc-link">
+          <span class="methodology-chapters-toc-number">04</span>
+          <span class="methodology-chapters-toc-label">אימות</span>
+        </a>
+      </nav>
+    </aside>
+
+    <div class="methodology-chapters-content">
+      <article id="chapter-01" class="methodology-chapter-block">
+        <h2 class="methodology-chapter-title">01. יסודות השיטה</h2>
+        <p>פרק היסודות מניח את האבני הבסיס להבנת שיטת איזון אינטגרטיבי. כאן אנו בוחנים את העקרונות המרכזיים שמנחים את הגישה הטיפולית, את ההיסטוריה של השיטה ואת הפילוסופיה שמאחוריה. הפרק כולל הגדרות מפתח, מודלים תיאורטיים ומסגרת עבודה ראשונית שתלווה אותנו לאורך כל התהליך.</p>
+        <p>הפעילויות המרכזיות בשלב זה כוללות למידה עיונית, הכרת המושגים הבסיסיים והבנת הקשר בין האיזון הפיזי, הרגשי והנפשי. אנו מתחילים לבנות את התשתית המושגית שתאפשר לנו להתקדם לשלבים המתקדמים יותר של האבחון והעיצוב.</p>
+        <blockquote class="methodology-chapter-quote">איזון אמיתי מתחיל בהבנה עמוקה של העקרונות שמנחים אותנו.</blockquote>
+        <p>בסיום הפרק, המשתתפים יפיקו מסמך יסודות אישי המותאם למטרותיהם הטיפוליות, ויקבלו כלים ראשוניים להערכה עצמית ולמיפוי נקודות המוצא שלהם בתהליך.</p>
+      </article>
+
+      <article id="chapter-02" class="methodology-chapter-block">
+        <h2 class="methodology-chapter-title">02. אבחון מצב</h2>
+        <p>פרק האבחון מתמקד בפיתוח יכולת התבוננות מדויקת ואובייקטיבית במצב הקיים. כאן אנו לומדים כיצד לזהות דפוסים, להעריך חוזקות וחולשות ולמפות את המערכות השונות המשפיעות על האיזון האישי. השיטה משלבת כלי אבחון איכותיים וכמותיים, תוך שימת דגש על ראייה הוליסטית.</p>
+        <p>הפעילויות בשלב זה כוללות ראיונות מובנים, שאלונים מותאמים, תרגילי מיפוי ויומני מעקב. אנו מפתחים מיומנויות של הקשבה עמוקה, זיהוי סימנים מוקדמים ויצירת קשרים בין תחומי חיים שונים. האבחון איננו נקודתי אלא תהליכי, ומתעדכן לאורך כל מסע הטיפול.</p>
+        <blockquote class="methodology-chapter-quote">אבחון מדויק הוא המפתח לתכנון טיפול אפקטיבי ומותאם אישית.</blockquote>
+        <p>בסיום הפרק, המשתתפים יפיקו דוח אבחון מקיף הכולל ממצאים, ניתוח מגמות והמלצות ראשוניות. דוח זה ישמש בסיס לשלב העיצוב הטיפולי ויאפשר מעקב אחר התקדמות לאורך זמן.</p>
+      </article>
+
+      <article id="chapter-03" class="methodology-chapter-block">
+        <h2 class="methodology-chapter-title">03. עיצוב תכנית</h2>
+        <p>פרק העיצוב מתרגם את הממצאים מהאבחון לתכנית פעולה קונקרטית ומעשית. כאן אנו לומדים כיצד לבנות מסלול טיפולי מותאם אישית, הכולל יעדים ברורים, אבני דרך ושיטות התערבות ספציפיות. השיטה מדגישה גמישות, יצירתיות ושילוב של מגוון גישות טיפוליות.</p>
+        <p>הפעילויות בשלב זה כוללות סיעור מוחות, בניית מפות דרכים, תכנון משאבים וקביעת מדדי הצלחה. אנו מפתחים יכולת לאזן בין שאיפות לטווח ארוך לבין צעדים מיידיים ומוחשיים, תוך התאמה לקצב האישי ולמשאבים הזמינים.</p>
+        <blockquote class="methodology-chapter-quote">תכנית טובה היא זו שמותאמת לאדם, לא האדם לתכנית.</blockquote>
+        <p>בסיום הפרק, המשתתפים יפיקו תכנית טיפולית מפורטת הכוללת לוח זמנים, פעולות ספציפיות ומנגנוני בקרה. התכנית תכלול גם תרחישי חירום והתאמות אפשריות למצבים בלתי צפויים.</p>
+      </article>
+
+      <article id="chapter-04" class="methodology-chapter-block">
+        <h2 class="methodology-chapter-title">04. אימות והטמעה</h2>
+        <p>פרק האימות סוגר את המעגל ומבטיח שהשיטה אכן משיגה את התוצאות המיועדות. כאן אנו לומדים כיצד למדוד התקדמות, לאסוף משוב ולבצע התאמות דינמיות. האימות איננו שלב סופי אלא תהליך מתמשך של למידה ושיפור.</p>
+        <p>הפעילויות בשלב זה כוללות מפגשי הערכה תקופתיים, ניתוח נתונים, ראיונות משוב וסקרים. אנו מפתחים תרבות של שקיפות, למידה מטעויות וחגיגת הצלחות. השיטה מדגישה את החשיבות של הטמעה ארוכת טווח ולא רק שינוי זמני.</p>
+        <blockquote class="methodology-chapter-quote">אימות מתמשך הוא המנוע שמניע שיפור מתמיד ואיזון בר קיימא.</blockquote>
+        <p>בסיום הפרק, המשתתפים יפיקו דוח אימות מקיף הכולל מדדי הצלחה, לקחים שנלמדו והמלצות להמשך. הם יקבלו גם כלים לאימות עצמי שוטף ולתחזוקת האיזון לאורך זמן.</p>
+      </article>
+    </div>
+  </div>
+
+  <div class="methodology-chapters-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <clipPath id="page-curl-clip">
+          <path d="M0,60 L0,0 L1200,0 L1200,60 L1140,60 Q1130,50 1120,60 Z"></path>
+        </clipPath>
+      </defs>
+      <rect width="1200" height="60" fill="var(--bg-light)"></rect>
+      <path d="M1120,60 Q1130,50 1140,60 L1200,60 L1200,52 Q1190,48 1180,52 Q1170,56 1160,52 Q1150,48 1140,52 Q1135,54 1130,52 Q1125,50 1120,52 Z" fill="var(--bg-light)" opacity="0.08"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="method-framework-section" data-layout-spec="שיטה-framework">
+  <div class="method-framework-container">
+    <div class="method-framework-grid">
+      <div class="method-framework-diagram-column">
+        <div class="method-framework-diagram-wrapper">
+          <img data-placeholder="method-framework-diagram" data-context="Clean infographic diagram for integrative balance methodology showing inputs (left side with arrows) flowing through a central process circle/hexagon into outputs (right side with arrows). Minimalist style with soft colors (blues, greens), clear arrows, and labeled sections. Professional, instructional aesthetic suitable for a methodology framework. Hebrew text labels for inputs/process/outputs." width="600" height="500" src="/assets/site-method-framework-diagram.webp" alt="תרשים מסגרת שיטת איזון אינטגרטיבי">
+          <p class="method-framework-diagram-caption">תרשים זה ממחיש את התהליך המובנה של שיטת איזון אינטגרטיבי – מקלט מידע ראשוני, דרך עיבוד שיטתי, ועד לתוצאות מדידות וברות יישום.</p>
+        </div>
+      </div>
+      
+      <div class="method-framework-content-column">
+        <h2 class="method-framework-title">מסגרת שניתן לחזור עליה</h2>
+        <p class="method-framework-intro">שיטת איזון אינטגרטיבי בנויה על תהליך מובנה וחוזר שמאפשר יישום עקבי בכל מקרה. המסגרת מבוססת על שלושה קלטים מרכזיים שמתורגמים לשלוש תפוקות ברורות.</p>
+        
+        <div class="method-framework-list">
+          <div class="method-framework-category">
+            <h3 class="method-framework-category-title">קלטים</h3>
+            
+            <div class="method-framework-item">
+              <p class="method-framework-item-text"><strong>הערכה ראשונית מקיפה:</strong> איסוף מידע רב-ממדי על המצב הנוכחי, כולל היבטים פיזיים, רגשיים וסביבתיים.</p>
+            </div>
+            
+            <div class="method-framework-item">
+              <p class="method-framework-item-text"><strong>ניתוח דפוסים קיימים:</strong> זיהוי תבניות חוזרות והרגלים שמשפיעים על מצב האיזון הנוכחי.</p>
+            </div>
+            
+            <div class="method-framework-item">
+              <p class="method-framework-item-text"><strong>הגדרת יעדים אישיים:</strong> בניית מפת דרכים ברורה המותאמת למטרות ולאתגרים הספציפיים של הלקוח.</p>
+            </div>
+          </div>
+          
+          <div class="method-framework-category">
+            <h3 class="method-framework-category-title">תפוקות</h3>
+            
+            <div class="method-framework-item">
+              <p class="method-framework-item-text"><strong>תוכנית טיפול מותאמת:</strong> מערך פעולות ספציפי המשלב טכניקות מגוונות בהתאם לצרכים המזוהים.</p>
+            </div>
+            
+            <div class="method-framework-item">
+              <p class="method-framework-item-text"><strong>כלים מעשיים ליישום עצמי:</strong> טכניקות ותרגילים שהלקוח יכול להפעיל באופן עצמאי בין מפגשים.</p>
+            </div>
+            
+            <div class="method-framework-item">
+              <p class="method-framework-item-text"><strong>מדדי התקדמות ברורים:</strong> מערכת מעקב שמאפשרת הערכה אובייקטיבית של השינויים והשיפור לאורך זמן.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="method-framework-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 L0,45 L200,45 L200,30 L400,30 L400,20 L600,20 L600,15 L800,15 L800,25 L1000,25 L1000,40 L1200,40 L1200,60 Z" fill="var(--bg-light)"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="methodology-benefits-section" data-layout-spec="שיטה-benefits">
+  <div class="methodology-benefits-container">
+    <div class="methodology-benefits-header">
+      <h2>למה המבנה הזה עובד</h2>
+      <p>שיטת איזון אינטגרטיבי מספקת מסגרת עבודה מובנית שמאפשרת לך לקבל החלטות מושכלות, לעבוד מתוך ראיות ולהשיג תוצאות עקביות לאורך זמן.</p>
+    </div>
+    
+    <div class="methodology-benefits-grid">
+      <article class="methodology-benefit-tile">
+        <h3>החלטות ברורות יותר</h3>
+        <p>מסגרת מובנית שמסייעת לזהות את הנקודות הקריטיות ולקבל החלטות מבוססות מידע במקום להסתמך על אינטואיציה בלבד.</p>
+      </article>
+      
+      <article class="methodology-benefit-tile">
+        <h3>פחות הנחות יסוד</h3>
+        <p>תהליך שמעודד בדיקה ואימות של הנחות במקום לקבל אותן כמובנות מאליהן, מה שמפחית טעויות ומשפר את איכות התוצאות.</p>
+      </article>
+      
+      <article class="methodology-benefit-tile">
+        <h3>התאמה מהירה יותר</h3>
+        <p>שפה משותפת וכלים אחידים שמאפשרים לכל המעורבים להגיע להבנה משותפת מהר יותר ולהתקדם בצורה מתואמת.</p>
+      </article>
+      
+      <article class="methodology-benefit-tile">
+        <h3>איטרציות מבוססות ראיות</h3>
+        <p>מעקב שיטתי אחר תוצאות שמאפשר ללמוד מכל שלב, לתקן מסלול בזמן אמת ולשפר את התהליך באופן מתמיד.</p>
+      </article>
+      
+      <article class="methodology-benefit-tile">
+        <h3>ידע ניתן להעברה</h3>
+        <p>תיעוד ומבנה ברור שמאפשרים לשתף ידע בין אנשים ופרויקטים, כך שלמידה מפרויקט אחד תורמת לכל הארגון.</p>
+      </article>
+      
+      <article class="methodology-benefit-tile">
+        <h3>תוצאות יציבות יותר</h3>
+        <p>גישה עקבית שמפחיתה תלות באנשים ספציפיים ומבטיחה שהתוצאות יהיו צפויות ואמינות לאורך זמן.</p>
+      </article>
+    </div>
+  </div>
+  
+  <div class="methodology-benefits-divider-wrapper">
+    <svg data-no-icon-edit="true" aria-hidden="true" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="inkWashGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" style="stop-color:#FAF8F4;stop-opacity:1"></stop>
+          <stop offset="50%" style="stop-color:#E8E6E0;stop-opacity:0.4"></stop>
+          <stop offset="100%" style="stop-color:#0B1220;stop-opacity:0.1"></stop>
+        </linearGradient>
+      </defs>
+      <path d="M0,60 L0,15 Q100,18 200,12 T400,20 Q500,15 600,18 T800,12 Q900,16 1000,14 T1200,18 L1200,60 Z" fill="url(#inkWashGradient)"></path>
+    </svg>
+  </div>
+</section>
+
+<section class="methodology-cta-section" data-layout-spec="שיטה-cta">
+  <div class="methodology-cta-container">
+    <div class="methodology-cta-content">
+      <h2 class="methodology-cta-title">רוצים עזרה ביישום השיטה למצב שלכם?</h2>
+      <p class="methodology-cta-description">נשמח להכיר ולהבין איך שיטת איזון אינטגרטיבי יכולה לתמוך בתהליך שלכם. צרו קשר לשיחת היכרות קצרה וללא התחייבות.</p>
+      <a href="/contact" class="methodology-cta-button btn-primary">יצירת קשר</a>
+      <p class="methodology-cta-reassurance"><small>ללא התחייבות — רק שיחה.</small></p>
+    </div>
+  </div>
+</section>
+  </main>
+  
+  <footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-grid">
+      <div class="footer-column footer-about">
+        <img src="/assets/logo.webp" alt="שיטת איזון אינטגרטיבי" class="logo" />
+        <p class="footer-description">שיטה מקיפה לאיזון והרמוניה אינטגרטיבית המשלבת גישות מתקדמות לשיפור איכות החיים.</p>
+      </div>
+      
+      <div class="footer-column footer-links">
+        <h3 class="footer-heading">קישורים מהירים</h3>
+        <ul class="footer-nav">
+          <li><a href="/method">שיטה</a></li>
+          <li><a href="/case-studies">מקרי בוחן</a></li>
+          <li><a href="/contact">צור קשר</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column footer-contact">
+        <h3 class="footer-heading">יצירת קשר</h3>
+        <ul class="contact-list">
+          <li>
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:[business_email]">[business_email]</a>
+          </li>
+          <li>
+            <i class="fas fa-phone"></i>
+            <a href="tel:[business_phone]">[business_phone]</a>
+          </li>
+          <li><a href="/"><i class="fas fa-map-marker-alt"></i>
+            <span>[business_address]</span></a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column footer-social">
+        <h3 class="footer-heading">עקבו אחרינו</h3>
+        <div class="social-links">
+          <a href="[facebook_handle]" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="[instagram_handle]" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="[whatsapp_handle]" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-whatsapp"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-legal">
+        <a href="/privacy">Privacy Policy</a>
+        <span class="separator">|</span>
+        <a href="/terms">Terms &amp; Conditions</a>
+        <span class="separator">|</span>
+        <a href="/accessibility">Accessibility</a>
+      </div>
+      <div class="footer-copyright">
+        <p>© 2026 שיטת איזון אינטגרטיבי. All rights reserved.</p>
+      </div>
+      <div class="footer-attribution">
+        <a href="https://zappy5.com" target="_blank" class="zappy-attribution" rel="noopener noreferrer">Generated by Zappy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+  
+  <a href="https://wa.me/[whatsapp_handle]" class="whatsapp-float" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  
+  <script src="/script.js"></script>
+
+    <div data-integration="accessibility:toolbar"></div>
+
+    <script id="zappy-mobile-submenu-script">
+    (function() {
+      function initMobileSubmenuToggles() {
+        if (window.innerWidth > 768) {
+          document.querySelectorAll('.mobile-submenu-toggle').forEach(function(btn) { btn.remove(); });
+          document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) { menu.classList.remove('mobile-expanded'); });
+          return;
+        }
+        var items = document.querySelectorAll('.nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu)');
+        items.forEach(function(li) {
+          if (li.querySelector('.mobile-submenu-toggle')) return;
+          var submenu = li.querySelector('.sub-menu');
+          var parentLink = li.querySelector(':scope > a');
+          if (!submenu || !parentLink) return;
+          var toggleBtn = document.createElement('button');
+          toggleBtn.className = 'mobile-submenu-toggle';
+          toggleBtn.setAttribute('aria-label', 'Toggle submenu');
+          toggleBtn.setAttribute('type', 'button');
+          parentLink.insertAdjacentElement('afterend', toggleBtn);
+          toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); e.stopPropagation();
+            document.querySelectorAll('.sub-menu.mobile-expanded').forEach(function(menu) {
+              if (menu !== submenu) { menu.classList.remove('mobile-expanded'); var t = menu.parentElement.querySelector('.mobile-submenu-toggle'); if(t) t.classList.remove('expanded'); }
+            });
+            submenu.classList.toggle('mobile-expanded');
+            toggleBtn.classList.toggle('expanded');
+          });
+        });
+      }
+      if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', initMobileSubmenuToggles); }
+      else { initMobileSubmenuToggles(); }
+      var resizeTimer; window.addEventListener('resize', function() { clearTimeout(resizeTimer); resizeTimer = setTimeout(initMobileSubmenuToggles, 250); });
+      // Re-initialize when mobile menu becomes visible (MutationObserver)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes') {
+            var target = mutation.target;
+            if (target.classList && (target.classList.contains('active') || target.classList.contains('open'))) {
+              setTimeout(initMobileSubmenuToggles, 100);
+            }
+          }
+        });
+      });
+      setTimeout(function() {
+        document.querySelectorAll('.mobile-menu, .nav-menu, #navMenu, nav').forEach(function(menu) {
+          observer.observe(menu, { attributes: true, attributeFilter: ['class', 'style'] });
+        });
+      }, 500);
+    })();
+    </script>
+</body></html>
